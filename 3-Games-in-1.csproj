@@ -8,4 +8,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="15-Puzzle\" />
+    <Folder Include="Hangman\" />
+  </ItemGroup>
+
 </Project>

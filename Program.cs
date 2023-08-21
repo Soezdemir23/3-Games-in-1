@@ -3,8 +3,13 @@
 // See https://aka.ms/new-console-template for more information
 
 
-using _3_Games_in_1.Rock_Paper_Scissors;
-new GameLogicRPS();
+using _3_Games_in_1._15_Puzzle;
+// 
+NPuzzle puzzle = new(64);
+
+puzzle.GameField();
+
+
 
 //var exitProgram = false;
 //while (!exitProgram)
@@ -39,3 +44,5 @@ new GameLogicRPS();
 //	}
 //}
 //Console.WriteLine("\t\t\t\t\t\t\tGoodbye!");
+
+

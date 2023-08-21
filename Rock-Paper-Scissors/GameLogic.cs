@@ -22,13 +22,28 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
 
 	internal class GameLogicRPS
 	{
-		private int maxScore { get; set; } = 3;
-		private bool vsCPU = false;
-		private Player[] players = { };
-		private bool wantsReturn = false;
-		private bool wantsQuit = false;
-		private bool wantsReplay = true;
 
+		/// <summary>
+		/// Maximum Score you can and, for the sake of not becoming boring, should get
+		/// </summary>
+		private int maxScore { get; set; } = 3;
+		/// <summary>
+		/// Simple check whether the Computer is playing against the player or not
+		/// </summary>
+		private bool vsCPU = false;
+		/// <summary>
+		/// players, maximum should be 2.
+		/// </summary>
+		private Player[] players = { };
+		/// <summary>
+		/// checks if the game has started.
+		/// If not, helps branching into the Intro method
+		/// </summary>
+		private bool gameStarted = false;
+		/// <summary>
+		/// while this is true, the game is running on repeat
+		/// </summary>
+		private bool gameRepeats = true;
 
 		public GameLogicRPS()
 		{
@@ -36,76 +51,24 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
 			Gamestart();
 		}
 
-		private void Intro()
-		{
-			Console.WriteLine("Welcome to Rock, Paper, Scissors!");
-			Console.Write("Are you playing alone, or with a friend?\n1. Player vs CPU\n2. Player vs Player\n3. Go back to the main menu\nChoose 1,2 or 3:");
-			string? choice = Console.ReadLine();
-
-			switch (choice)
-			{
-				case "1":
-					Console.WriteLine("Your own machine has risen from it's silicone shackles to challenge YOU!");
-					Console.WriteLine("Get Ready!");
-					vsCPU = true;
-					Console.Write("Please enter your name, Player1: ");
-
-					string? player1Name = Console.ReadLine();
-					HandlePlayerSetup(player1Name, 1);
-					players.Append(new Player("CPU"));
-					break;
-				case "2":
-					Console.WriteLine("You have chosen to play against a friend!");
-					Console.WriteLine("Get Ready!");
-					vsCPU = false;
-					Console.Write("Please enter your name, Player1: ");
-
-					player1Name = Console.ReadLine();
-					HandlePlayerSetup(player1Name, 1);
-
-					string? player2Name = Console.ReadLine();
-					HandlePlayerSetup(player2Name, 2);
-
-					break;
-				case "3":
-					Console.WriteLine("Going back to the Game Selection Menu!");
-					wantsQuit = true;
-					break;
-				default:
-					Console.WriteLine("Invalid choice! Please try again!");
-					break;
-			}
-		}
-
-		private void HandlePlayerSetup(string playerName, int player)
-		{
-
-			if (playerName == null || playerName.Length == 0)
-			{
-				Console.WriteLine($"Invalid name! Let's call you Player{player}!");
-				players[player - 1] = new Player($"Player{player}");
-
-
-			}
-			else
-			{
-				players[player - 1] = (new Player(playerName));
-			}
-			if (vsCPU == true)
-			{
-				players[1] = new Player("CPU");
-			}
-		}
-
 		private void Gamestart()
 		{
-			Intro();
-			if (wantsQuit == true)
+
+			//check if the game is already running
+			while (gameRepeats)
 			{
-				return;
-			}
-			while (wantsReplay)
-			{
+				//if the game didn't start yet, branch into the Intro method
+				if (gameStarted == false)
+				{
+					Intro();
+					gameStarted = true;
+					//
+					if (gameRepeats == false)
+					{
+						return;
+					}
+				}
+				//
 				Console.ForegroundColor = ConsoleColor.DarkRed;
 				Console.BackgroundColor = ConsoleColor.Cyan;
 				Console.Write($"{players[0].Name}");
@@ -132,11 +95,89 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
 
 				HandlePlayerChoices(players[1], vsCPU);
 				CheckScoreCondition(players);
-				WhoWon(players);
+				if (SomebodyWon(players) == true)
+				{
+					Console.WriteLine("Will you play again?");
+					Console.WriteLine("1. Yes");
+					Console.WriteLine("2. No");
+					var decision = Console.ReadKey();
+					if (decision.Key == ConsoleKey.D1)
+					{
+						Array.Clear(players);
+						gameStarted = false;
+						Console.Clear();
+					}
+					else if (decision.Key == ConsoleKey.D2)
+					{
+						gameRepeats = false;
+					}
+
+				}
 				Console.Write("Press any key to continue...");
-				Console.Read();
+				Console.ReadKey();
 				Console.Clear();
 			}
+		}
+
+		private void HandlePlayerSetup(string playerName, int player)
+		{
+
+			if (playerName == null || playerName.Length == 0)
+			{
+				Console.WriteLine($"Invalid name! Let's call you Player{player}!");
+				players[player - 1] = new Player($"Player{player}");
+			}
+			else
+			{
+				players[player - 1] = (new Player(playerName));
+			}
+			if (vsCPU == true)
+			{
+				players[1] = new Player("CPU");
+			}
+		}
+		private void Intro()
+		{
+			Console.WriteLine("Welcome to Rock, Paper, Scissors!");
+			Console.WriteLine("Are you playing alone, or with a friend?\n1. Player vs CPU\n2. Player vs Player\n3. Go back to the main menu\nChoose 1,2 or 3:");
+			ConsoleKeyInfo choice = Console.ReadKey();
+
+			switch (choice.Key)
+			{
+				case ConsoleKey.D1:
+					Console.WriteLine("Your own machine has risen from it's silicone shackles to challenge YOU!");
+					Console.WriteLine("Get Ready!");
+					vsCPU = true;
+					Console.Write("Please enter your name, Player1: ");
+
+					string? player1Name = Console.ReadLine();
+					HandlePlayerSetup(player1Name, 1);
+					players.Append(new Player("CPU"));
+					break;
+				case ConsoleKey.D2:
+					Console.WriteLine("You have chosen to play against a friend!");
+					Console.WriteLine("Get Ready!");
+					vsCPU = false;
+					
+					Console.Write("Please enter your name, Player1: ");
+					player1Name = Console.ReadLine();
+					HandlePlayerSetup(player1Name, 1);
+
+					Console.Write("Please enter your name, Player2: ");
+					string? player2Name = Console.ReadLine();
+					HandlePlayerSetup(player2Name, 2);
+
+					break;
+				case ConsoleKey.D3:
+					Console.WriteLine("Going back to the Game Selection Menu!");
+					gameRepeats = false;
+					break;
+				default:
+					Console.WriteLine("Invalid choice! Please try again!");
+					break;
+
+			}
+			Console.WriteLine();
 		}
 
 		private static void CheckScoreCondition(Player[] players)
@@ -165,33 +206,18 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
 
 		}
 
-		private void WhoWon(Player[] players)
+		private bool SomebodyWon(Player[] players)
 		{
-			if (players[1].Score == maxScore)
+			if (players[1].Score == maxScore || players[0].Score == maxScore)
 			{
-				Console.WriteLine($"{players[1].Name} has won!");
+				Player player = players.Where(x => x.Score == maxScore).FirstOrDefault();// can't be null, why does it say it could be null?
+				Console.WriteLine($"{player.Name} has won!");
 				Console.WriteLine("Press a button to continue.");
-				Console.Read();
+				Console.ReadKey();
 				Console.Clear();
-				Console.WriteLine("The battle has ended, but the game can always restart");
-				Console.Write("Restart game? [Y/N] ");
-				string confirmation = Console.ReadLine();
-				if (confirmation == "y" || confirmation == "Y")
-				{
-					Console.WriteLine("Alright, let's go again!");
-				}
-				else if (confirmation == "n" || confirmation == "N")
-				{
-					Console.WriteLine("Alright, let's go back to the main menu!");
-				}
-				else
-				{
-					Console.WriteLine("You didn't press Y or N, so we're going back to the main menu!");
-				}
-			} else
-			{
-				Console.WriteLine("")
+				return true;
 			}
+			return false;
 		}
 
 
@@ -203,38 +229,43 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
 				player.choice = (RPS)(new Random().Next(3));
 				Thread.Sleep(1000);
 				Console.WriteLine($"The silicone ghost chose {GetEnumName(player.choice)}.");
-			}else
-			{
-
-			while (true)
-			{
-				Console.WriteLine($"{player.Name}, it is your turn, choose your Destiny:");
-				Console.WriteLine("1. Rock? Press 1 or the r key");
-				Console.WriteLine("2. Paper? Choose 2 or the p key");
-				Console.WriteLine("3. Scissors? Use the 3 key or press s");
-				string chosen = Console.ReadLine();
-
-				if (chosen == "r" || chosen == "R" || chosen == "3")
-				{
-					player.choice = RPS.Scissors;
-					break;
-				}
-				else if (chosen == "p" || chosen == "P" || chosen == "2")
-				{
-					player.choice = RPS.Paper;
-					break;
-				}
-				else if (chosen == "s" || chosen == "S" || chosen == "1")
-				{
-					player.choice = RPS.Rock;
-					break;
-				}
-				else
-				{
-					Console.WriteLine($"You entered {chosen}");
-					Console.WriteLine("If you didn't want to play the game, you could've just closed the window.");
-				}
 			}
+			else
+			{
+
+				while (true)
+				{
+					Console.WriteLine($"{player.Name}, it is your turn, choose your Destiny:");
+					Console.WriteLine("1. Rock? Press 1 or the r key");
+					Console.WriteLine("2. Paper? Choose 2 or the p key");
+					Console.WriteLine("3. Scissors? Use the 3 key or press s");
+					ConsoleKeyInfo chosen = Console.ReadKey();
+
+					if (chosen.Key == ConsoleKey.D1 || chosen.Key == ConsoleKey.R)
+					{
+
+						player.choice = RPS.Rock;
+						Console.WriteLine($"{player.Name} choose: {GetEnumName(player.choice)}");
+						return;
+					}
+					else if (chosen.Key == ConsoleKey.D2 || chosen.Key == ConsoleKey.P)
+					{
+						player.choice = RPS.Paper;
+						Console.WriteLine($"{player.Name} choose: {GetEnumName(player.choice)}");
+						break;
+					}
+					else if (chosen.Key == ConsoleKey.D3 || chosen.Key == ConsoleKey.S)
+					{
+						player.choice = RPS.Rock;
+						Console.WriteLine($"{player.Name} choose: {GetEnumName(player.choice)}");
+						break;
+					}
+					else
+					{
+						Console.WriteLine($"You entered {chosen.KeyChar}");
+						Console.WriteLine("If you didn't want to play the game, you could've just closed the window.");
+					}
+				}
 
 			}
 		}
@@ -259,6 +290,12 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
 		{
 			Name = name;
 			Score = 0;
+		}
+
+		public void Reset()
+		{
+			Score = 0;
+
 		}
 	}
 }

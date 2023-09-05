@@ -1,13 +1,10 @@
-﻿
-
-// See https://aka.ms/new-console-template for more information
+﻿// See https://aka.ms/new-console-template for more information
 
 
 using _3_Games_in_1._15_Puzzle;
-// 
-NPuzzle puzzle = new(64);
 
-puzzle.GameField();
+//
+NPuzzle puzzle = new(4);
 
 
 
@@ -44,5 +41,3 @@ puzzle.GameField();
 //	}
 //}
 //Console.WriteLine("\t\t\t\t\t\t\tGoodbye!");
-
-

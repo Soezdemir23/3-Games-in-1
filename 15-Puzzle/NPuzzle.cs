@@ -16,18 +16,21 @@ namespace _3_Games_in_1._15_Puzzle
         /// The numbers that will be used in the game.
         /// </summary>
         private int[] numbers { get; set; }
+
         /// <summary>
         /// The position of the player in the game.
         /// </summary>
         int[] playerPosition { get; set; }
+
         /// <summary>
         /// The game board that will be used in the game.
         /// </summary>
         private int[,] gameBoard { get; set; } = { };
+
         /// <summary>
         /// Instantiantig the game with a default size of 9 or more if the perfect square is given.
         /// Check if the game is solvable, if not, shuffle the numbers until it is.
-        /// 
+        ///
         /// </summary>
         /// <param name="size">has to be a perfect square candidate, else it reverts to 9</param>
         public NPuzzle(int size)
@@ -61,9 +64,9 @@ namespace _3_Games_in_1._15_Puzzle
                     Console.ReadKey();
                     break;
                 }
-  
             }
         }
+
         /// <summary>
         /// Creates a 1-dimensional array with the numbers from 0 to n.
         /// </summary>
@@ -80,7 +83,6 @@ namespace _3_Games_in_1._15_Puzzle
             return arr;
         }
 
-        
         /// <summary>
         /// Prepare the gamefield that will be used to display on the console and used for various game logic checks.
         /// </summary>
@@ -100,18 +102,14 @@ namespace _3_Games_in_1._15_Puzzle
             }
             return n;
         }
-        
-        
-        
-        
+
         /// <summary>
         /// Displays the array and checks where the player resides to create a gamefield.
         /// This gamefield displays the player as a green square and the possible moves as red squares.
-        /// 
+        ///
         /// </summary>
         public void GameField()
         {
-   
             int n = GameFieldPrep();
             gameBoard = new int[n, n];
             int k = 0;
@@ -327,6 +325,7 @@ namespace _3_Games_in_1._15_Puzzle
             }
             Console.WriteLine("+");
         }
+
         /// <summary>
         /// sets the player movement starting from 00.
         /// The moves by rotating.
@@ -404,6 +403,7 @@ namespace _3_Games_in_1._15_Puzzle
                     break;
             }
         }
+
         /// <summary>
         /// Check if the numbers are in order.
         /// Requirement to win the game
@@ -423,6 +423,7 @@ namespace _3_Games_in_1._15_Puzzle
                 return false;
             return true;
         }
+
         /// <summary>
         /// find where zero is in order to return the coordinates and assign them to the player
         /// </summary>
@@ -444,9 +445,10 @@ namespace _3_Games_in_1._15_Puzzle
             }
             return zeroPosition;
         }
+
         /// <summary>
         /// KnuthShuffle is a shuffle algorithm that is used to shuffle the numbers in the gameboard
-        /// 
+        ///
         /// </summary>
         /// <param name="array">the numbers array</param>
         /// <param name="r">object of class Random</param>
@@ -462,6 +464,7 @@ namespace _3_Games_in_1._15_Puzzle
             }
             return array;
         }
+
         //Borrowed from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
         //
 
@@ -471,16 +474,17 @@ namespace _3_Games_in_1._15_Puzzle
         /// <param name="arr">an array</param>
         /// <param name="gameboard">the current gameboard</param>
         /// <returns>the count of inverse elements</returns>
-        public static int GetInvCount(int[] arr, int[,]gameboard)
+        public static int GetInvCount(int[] arr, int[,] gameboard)
         {
             int inv_count = 0;
-            for (int i = 0; i  < Math.Sqrt(gameboard.Length * gameboard.Length) - 1; i++)
+            for (int i = 0; i < Math.Sqrt(gameboard.Length * gameboard.Length) - 1; i++)
             {
-                for(int j = i + 1; j < Math.Sqrt(gameboard.Length * gameboard.Length) -1; j++)
+                for (int j = i + 1; j < Math.Sqrt(gameboard.Length * gameboard.Length) - 1; j++)
                 {
                     // count pairs(arr[i], arr[j]) such that
                     // i < j but arr[i] > arr[j]
-                    if (arr[j] != 0 && arr[i] != 0 && arr[i] > arr[j]) inv_count++;
+                    if (arr[j] != 0 && arr[i] != 0 && arr[i] > arr[j])
+                        inv_count++;
                 }
             }
             return inv_count;
@@ -488,24 +492,26 @@ namespace _3_Games_in_1._15_Puzzle
 
         /// <summary>
         /// finds the x position based on the gameboard
-        /// 
+        ///
         /// </summary>
         /// <param name="gameboard"> the gameboard </param>
         /// <returns>the length of the array until x</returns>
-        static int findXPosition(int[, ] gameboard)
+        static int findXPosition(int[,] gameboard)
         {
             //start from bottom-right corner of matrix
-            for (int i = (int)Math.Sqrt(gameboard.Length)-1; i >=0; i--)
+            for (int i = (int)Math.Sqrt(gameboard.Length) - 1; i >= 0; i--)
             {
-                for (int j = (int)Math.Sqrt(gameboard.Length)-1; j >=0; j--)
+                for (int j = (int)Math.Sqrt(gameboard.Length) - 1; j >= 0; j--)
                 {
                     if (gameboard[i, j] == 0)
                     {
                         return gameboard.Length - i;
                     }
                 }
-            }return -1;
+            }
+            return -1;
         }
+
         /// <summary>
         /// checks if the shuffled board is solvable
         /// </summary>
@@ -519,7 +525,7 @@ namespace _3_Games_in_1._15_Puzzle
             {
                 for (int j = 0; j < Math.Sqrt(gameboard.Length); j++)
                 {
-                    arr[k++] = gameboard[i, j];   
+                    arr[k++] = gameboard[i, j];
                 }
             }
 
@@ -541,7 +547,7 @@ namespace _3_Games_in_1._15_Puzzle
                 else
                 {
                     return invCount % 2 != 0;
-                } 
+                }
             }
         }
     }

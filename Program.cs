@@ -1,43 +1,60 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-
 using _3_Games_in_1._15_Puzzle;
+using _3_Games_in_1.Hangman;
+using _3_Games_in_1.Rock_Paper_Scissors;
+using System.Reflection;
 
-//
-NPuzzle puzzle = new(4);
+Assembly assembly = Assembly.GetExecutingAssembly();
 
+// We only have one embeded resource, so let's get it
+string wordFile = assembly.GetManifestResourceNames()[0];
+StreamReader streamReader = new StreamReader(
+    wordFile.Replace("_3_Games_in_1.words.txt", "words.txt")
+);
+List<string> content = new List<string>();
 
+// now from streamReader, read the content line by line and add it to the content list
+while (!streamReader.EndOfStream)
+{
+    content.Add(streamReader.ReadLine());
+}
 
-//var exitProgram = false;
-//while (!exitProgram)
-//{
-//	Console.WriteLine("\t\t\t\t\t\t3-in-1 Game Collection!");
-//	Console.WriteLine("\t\t\t\t\t\tChoose your options!");
-//	Console.WriteLine("\t\t\t\t\t\t1. Rock Paper Scissors");
-//	Console.WriteLine("\t\t\t\t\t\t2. 15-Puzzle");
-//	Console.WriteLine("\t\t\t\t\t\t3. Hangman");
-//	Console.WriteLine("\t\t\t\t\t\t4. Exit");
+while (true)
+{
+    Console.WriteLine("Welcome to the big 3-in-1 Game Section!\nChoose your game or exit!");
+    Console.WriteLine("1. [R]ock-Paper-Scissors\n2. [N]-Puzzle\n3. [H]angman\n4. [E]xit");
+    Console.WriteLine("Choose by the numbers, or the letters in the bracket.");
 
-//	var input = Console.ReadKey();
-
-//	switch (input.Key)
-//	{
-//		case ConsoleKey.D1:
-//			new GameLogicRPS();
-//			break;
-//		case ConsoleKey.D2:
-//			Console.WriteLine("15-Puzzle");
-//			break;
-//		case ConsoleKey.D3:
-//			Console.WriteLine("Hangman");
-//			break;
-//		case ConsoleKey.D4:
-//			Console.WriteLine("Exiting...");
-//			exitProgram = true;
-//			break;
-//		default:
-//			Console.WriteLine("Invalid input!");
-//			break;
-//	}
-//}
-//Console.WriteLine("\t\t\t\t\t\t\tGoodbye!");
+    var choice = Console.ReadKey(true).Key;
+    Console.Clear();
+    if (choice == ConsoleKey.D1 || choice == ConsoleKey.R)
+    {
+        new GameLogicRPS();
+    }
+    else if (choice == ConsoleKey.D2 || choice == ConsoleKey.N)
+    {
+        Console.WriteLine("How big do you want the puzzle to be?");
+        string size = Console.ReadLine();
+        size = size == null? "9":size.Trim();
+        if (int.TryParse(size, out int num) == true)
+        {
+            new NPuzzle(num);
+            break;
+        } 
+    
+    }
+    else if (choice == ConsoleKey.D3 || choice == ConsoleKey.H)
+    {
+        new Hangman(content);
+    }
+    else if (choice == ConsoleKey.D4 || choice == ConsoleKey.E)
+    {
+        Console.WriteLine("Goodbye!");
+        Environment.Exit(0);
+    }
+    else
+    {
+        Console.WriteLine("Please enter a valid choice!");
+    }
+}

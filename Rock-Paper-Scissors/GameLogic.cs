@@ -51,6 +51,7 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
         {
             players = new Player[2];
             Gamestart();
+            Console.Clear();
         }
 
         private void Gamestart()
@@ -101,7 +102,7 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
                     Console.WriteLine("Will you play again?");
                     Console.WriteLine("1. Yes");
                     Console.WriteLine("2. No");
-                    var decision = Console.ReadKey();
+                    var decision = Console.ReadKey(true);
                     if (decision.Key == ConsoleKey.D1)
                     {
                         Array.Clear(players);
@@ -114,7 +115,7 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
                     }
                 }
                 Console.Write("Press any key to continue...");
-                Console.ReadKey();
+                Console.ReadKey(true);
                 Console.Clear();
             }
         }
@@ -142,7 +143,7 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
             Console.WriteLine(
                 "Are you playing alone, or with a friend?\n1. Player vs CPU\n2. Player vs Player\n3. Go back to the main menu\nChoose 1,2 or 3:"
             );
-            ConsoleKeyInfo choice = Console.ReadKey();
+            ConsoleKeyInfo choice = Console.ReadKey(true);
 
             switch (choice.Key)
             {
@@ -216,7 +217,7 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
                 Player player = players.Where(x => x.Score == maxScore).FirstOrDefault(); // can't be null, why does it say it could be null?
                 Console.WriteLine($"{player.Name} has won!");
                 Console.WriteLine("Press a button to continue.");
-                Console.ReadKey();
+                Console.ReadKey(true);
                 Console.Clear();
                 return true;
             }
@@ -240,7 +241,7 @@ namespace _3_Games_in_1.Rock_Paper_Scissors
                     Console.WriteLine("1. Rock? Press 1 or the r key");
                     Console.WriteLine("2. Paper? Choose 2 or the p key");
                     Console.WriteLine("3. Scissors? Use the 3 key or press s");
-                    ConsoleKeyInfo chosen = Console.ReadKey();
+                    ConsoleKeyInfo chosen = Console.ReadKey(true);
 
                     if (chosen.Key == ConsoleKey.D1 || chosen.Key == ConsoleKey.R)
                     {

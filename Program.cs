@@ -40,7 +40,7 @@ while (true)
         if (int.TryParse(size, out int num) == true)
         {
             new NPuzzle(num);
-            break;
+            
         } 
     
     }

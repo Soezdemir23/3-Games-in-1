@@ -37,6 +37,7 @@ namespace _3_Games_in_1.Hangman
                 else if (choice.Key == ConsoleKey.D2 || choice.Key == ConsoleKey.E)
                 {
                     Console.WriteLine("Goodbye!");
+                    Console.Clear();
                     return;
                 }else
                 {
@@ -67,7 +68,7 @@ namespace _3_Games_in_1.Hangman
                 if (secretWord.Contains(key.KeyChar.ToString()) == false)
                 {
                     incorrect.Add(key.KeyChar.ToString());
-                    guesses = -1;
+                    guesses--;
                 }
 
                 Console.WriteLine(
@@ -77,7 +78,7 @@ namespace _3_Games_in_1.Hangman
 
             if (SecretWord(guessedAlphabet, secretWord).Contains("_") == false)
             {
-                for (global::System.Int32 i = 0; i < 12; i++)
+                for (int i = 0; i < 12; i++)
                 {
                     int random = new Random().Next(3);
                     if (random == 1)
@@ -90,7 +91,7 @@ namespace _3_Games_in_1.Hangman
             }
             else
             {
-                for (global::System.Int32 i = 0; i < 12; i++)
+                for (int i = 0; i < 12; i++)
                 {
                     int random = new Random().Next(3);
                     if (random == 1)

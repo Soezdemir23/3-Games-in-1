@@ -27,6 +27,8 @@ namespace _3_Games_in_1._15_Puzzle
         /// </summary>
         private int[,] gameBoard { get; set; } = { };
 
+        private bool returnToMainMenu { get; set; } = false;
+
         /// <summary>
         /// Instantiantig the game with a default size of 9 or more if the perfect square is given.
         /// Check if the game is solvable, if not, shuffle the numbers until it is.
@@ -55,6 +57,10 @@ namespace _3_Games_in_1._15_Puzzle
 
             while (true)
             {
+                if (returnToMainMenu == true)
+                {
+                    return;
+                }
                 GameField();
                 PlayerMovement(gameBoard, playerPosition); //playerPosition will never be null in this context. Get out of here bro!
                 if (checkOrdered(numbers) == true)
@@ -64,6 +70,7 @@ namespace _3_Games_in_1._15_Puzzle
                     Console.ReadKey();
                     break;
                 }
+                Console.Clear();
             }
         }
 
@@ -324,6 +331,7 @@ namespace _3_Games_in_1._15_Puzzle
                 Console.Write('-');
             }
             Console.WriteLine("+");
+            Console.WriteLine("Use WASD or Arrow keys to move, ESC to exit");
         }
 
         /// <summary>
@@ -398,6 +406,10 @@ namespace _3_Games_in_1._15_Puzzle
                         numbers[centerIndex] = right;
                     }
                     break;
+                    case ConsoleKey.Escape:
+                        Console.WriteLine("Goodbye!");
+                    returnToMainMenu = true;
+                        break;
                 default:
 
                     break;

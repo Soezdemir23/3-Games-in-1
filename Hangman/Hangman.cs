@@ -48,6 +48,7 @@ namespace _3_Games_in_1.Hangman
 
         }
 
+        /// Asks player for a letter
         private void gameStart(string secretWord)
         {
             Console.WriteLine(

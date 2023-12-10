@@ -8,10 +8,14 @@ Today, I am presenting you the first version of my current project:
 	- Hangman
 
 
-The project is getting polished and getting some bugs squashed.
+![alt text](./Screenshot.png)
+
+## How to run?
+1. Clone repository
+2. Build project with dotnet build
+3. Run project with dotnet run
 
 
-Let's start introducing the first one:
 ## Rock Paper Scissors
 
 - Simple terminal game

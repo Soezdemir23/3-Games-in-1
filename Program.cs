@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using _3_Games_in_1._15_Puzzle;
+﻿using _3_Games_in_1._15_Puzzle;
 using _3_Games_in_1.Hangman;
 using _3_Games_in_1.Rock_Paper_Scissors;
 using System.Reflection;
@@ -39,10 +37,8 @@ while (true)
         size = size == null? "9":size.Trim();
         if (int.TryParse(size, out int num) == true)
         {
-            new NPuzzle(num);
-            
+            new NPuzzle(num); 
         } 
-    
     }
     else if (choice == ConsoleKey.D3 || choice == ConsoleKey.H)
     {

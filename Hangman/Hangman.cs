@@ -8,17 +8,33 @@ using System.Threading.Tasks;
 namespace _3_Games_in_1.Hangman
 {
     /// <summary>
-    ///
+    ///Hangman game
     /// </summary>
     public class Hangman
     {
+        /// <summary>
+        /// Maximum guesses are always six
+        /// </summary>
         private int guesses { get; set; } = 6;
+        /// <summary>
+        /// An alphabet as a List of strings, easier to check and compare
+        /// </summary>
         private List<string> alphabet { get; set; } =
             "abcdefghijklmnopqrstuvwxyz".ToCharArray().Select(c => c.ToString()).ToList();
-
+        /// <summary>
+        /// an empty list of guessed letters, were easier to use since the size was to be dynamic.
+        /// </summary>
         private List<string> guessedAlphabet { get; set; } = new List<string>();
+        /// <summary>
+        /// incorrect amount of letters that have not been in the secretWord
+        /// </summary>
         private List<string> incorrect { get; set; } = new List<string>();
-
+        /// <summary>
+        ///  Creates an object, creating the  hangman oject runs immediately the game.
+        ///  Randomly chooses a secret word.
+        ///  Asks player if he wants to start or exit the game and  handlees the rest of the logic
+        /// </summary>
+        /// <param name="content">the textfile turned into a list that is embedded into the binary</param>
         public Hangman(List<string> content)
         {
 
@@ -31,7 +47,7 @@ namespace _3_Games_in_1.Hangman
                 ConsoleKeyInfo choice = Console.ReadKey(true);
                 if (choice.Key == ConsoleKey.D1 || choice.Key == ConsoleKey.S)
                 {
-                    var secretWord = content[new Random().Next(content.Count)];
+                    string secretWord = content[new Random().Next(content.Count)];
                     gameStart(secretWord);
                 }
                 else if (choice.Key == ConsoleKey.D2 || choice.Key == ConsoleKey.E)
@@ -47,14 +63,22 @@ namespace _3_Games_in_1.Hangman
             }
 
         }
-
+        /// <summary>
+        /// Starts the game:
+        /// <list type="bullet">
+        /// Tells the player the rules and how long the word is
         /// Asks player for a letter
+        /// If the player guessed correctly or not, show it in the console
+        /// ttake it awa
+        /// </list>
+        /// </summary>
+        /// <param name="secretWord">with no secretWord, the hangman has no purpose</param>
         private void gameStart(string secretWord)
         {
             Console.WriteLine(
                 "Let's start the game! One secret word, 6 chances to get it right. Let's GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!"
             );
-            Console.WriteLine($"This word has {secretWord.Length} letters, guess the first word: ");
+            Console.WriteLine($"This word has {secretWord.Length} letters, guess the first letter: ");
             while (true)
             {
                 //check if the user lost all their chances
@@ -63,7 +87,7 @@ namespace _3_Games_in_1.Hangman
                 {
                     break;
                 }
-                var key = Console.ReadKey(true);
+                ConsoleKeyInfo key = Console.ReadKey(true);
                 //check if it is a letter
                 guessedAlphabet.Add(key.KeyChar.ToString());
                 if (secretWord.Contains(key.KeyChar.ToString()) == false)
@@ -104,15 +128,27 @@ namespace _3_Games_in_1.Hangman
                 }
                 Console.WriteLine("Secretword was: " + secretWord);
             }
-
-            Console.WriteLine("\n");
+            Console.WriteLine("Press any key to continue, or close program to exit application");
+            Console.Read();
+            Console.Clear();
             
         }
-
+        /// <summary>
+        /// returns the secretWord spaced and replaced with underscores fo letters that were not guessed yet.
+        /// 
+        /// secretWord: rain
+        /// 
+        /// guessedAlphabet: ai
+        /// 
+        /// result: _ a i _
+        /// </summary>
+        /// <param name="guessedAlphabet">every letter guessed so far</param>
+        /// <param name="secretWord">the secret word</param>
+        /// <returns>a partially hidden secret word</returns>
         public string SecretWord(List<string> guessedAlphabet, string secretWord)
         {
             string result = "";
-            foreach (var c in secretWord.ToCharArray())
+            foreach (char c in secretWord.ToCharArray())
             {
                 if (guessedAlphabet.Contains(c.ToString()))
                 {
@@ -126,21 +162,29 @@ namespace _3_Games_in_1.Hangman
 
             return result;
         }
-
+        /// <summary>
+        /// shows the player letters that didn't fit into the secret word
+        /// </summary>
+        /// <returns>a string of letters that failed :(</returns>
         public string IncorrectGuesses()
         {
             string _ = "";
-            foreach (var c in incorrect)
+            foreach (string c in incorrect)
             {
                 _ += c;
             }
             return _;
         }
-
+        /// <summary>
+        /// shows the leftover alphabet that haven't been trid yet.
+        /// </summary>
+        /// <param name="alphabet">the alphabet as a list</param>
+        /// <param name="guessedAlphabet">the letters used so far</param>
+        /// <returns>a string of letters not used yet</returns>
         public string LeftAlphabet(List<string> alphabet, List<string> guessedAlphabet)
         {
             string rest = "";
-            foreach (var c in alphabet)
+            foreach (string c in alphabet)
             {
                 if (!guessedAlphabet.Contains(c))
                 {
@@ -150,21 +194,5 @@ namespace _3_Games_in_1.Hangman
             return rest;
         }
 
-        /**
-         * I need following things:
-         *
-         * 1. User enters a key
-         * 2. Key is checked if it's part of the alphabet
-         * 2.1. if not -> warn them up to three times,
-         *  then take their lives away until they start to guess right
-         * 2.2. if it is -> add to the guessed characters and add it to
-         *  a function that checks the alphabet list for what hasn't been tried,
-         *  returning a list of characters that haven't been tried yet
-         *
-         * 3. Key is checked if it's part of the guessed List of characters
-         * 4. Key is checked if it's part of the word
-         *
-         *
-         * */
     }
 }

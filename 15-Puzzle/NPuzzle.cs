@@ -525,7 +525,8 @@ namespace _3_Games_in_1._15_Puzzle
         }
 
         /// <summary>
-        /// checks if the shuffled board is solvable
+        /// checks if the shuffled board is solvable, thanks goes to Geeks for Geeks.
+        /// Adapted to my implementation of the puzzle.
         /// </summary>
         /// <param name="gameboard">board to check</param>
         /// <returns>boolean true or false</returns>
